@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.8/lottie.min.js"></script>
+  <title>AWS Projects</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #1a1a1a;
+      color: #ffffff;
+      font-family: 'Raleway', sans-serif;
+      overflow-x: hidden;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #333333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .loader h1 {
+      font-size: 3rem;
+      color: #f39c12;
+      opacity: 0;
+      animation: fadeInOut 3s ease-in-out forwards;
+    }
+
+    @keyframes fadeInOut {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .hide {
+      display: none;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+      background: #333333;
+      color: #ffffff;
+      padding: 0 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    nav h1 {
+      color: #f39c12;
+      font-family: 'Raleway', sans-serif;
+    }
+    nav ul {
+      display: flex;
+      gap: 20px;
+    }
+    nav ul li {
+      list-style: none;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: 400;
+      transition: color 0.3s, transform 0.3s;
+    }
+    nav ul li a:hover {
+      color: #f39c12;
+      transform: scale(1.1);
+    }
+    main {
+      margin-top: 60px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #f39c12;
+      font-family: 'Raleway', sans-serif;
+    }
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 20px;
+    }
+    .card {
+      background-color: #333333;
+      color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      height: auto;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      max-height: 200px;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .card:hover img {
+      transform: scale(1.1);
+      opacity: 0.7;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .card:hover .overlay {
+      opacity: 1;
+    }
+
+    .overlay h2 {
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+      color: #f39c12;
+    }
+
+    .overlay p {
+      margin-bottom: 20px;
+    }
+
+    .project-btn {
+      background-color: #000000;
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      text-transform: uppercase;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 30px;
+    }
+
+    .project-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    form {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    form input, form textarea {
+      margin-bottom: 10px;
+      padding: 10px;
+      width: 90%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: border-color 0.3s ease;
+    }
+
+    form input:focus, form textarea:focus {
+      border-color: #f39c12;
+    }
+
+    form button {
+      width: auto;
+    }
+
+    footer {
+      background: #333333;
+      color: #ffffff;
+      padding: 40px 20px;
+      text-align: center;
+      border-top: 3px solid #f39c12;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader Animation -->
+  <div class="loader">
+    <h1>Loading AWS Projects...</h1>
+  </div>
+
+  <header>
+    <nav>
+      <h1>AWS Projects</h1>
+      <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="Pythons.html">Projects</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main id="home">
+    <h1>My AWS Projects</h1>
+    <div class="card-container" id="projects"></div>
+  </main>
+  <script>
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.querySelector('.loader').classList.add('hide');
+      }, 3000);
+    });
+
+    const projects = [
+      {
+        title: 'Launch EC2 Instances',
+        description: 'Automate the process of launching EC2 instances using AWS SDK.',
+        image: 'templates/ec2_instance.png',
+        formId: 'ec2LaunchForm',
+        endpoint: '/launch_ec2',
+        fields: [
+          { label: 'Instance Type:', name: 'type', type: 'text' },
+          { label: 'Key Pair Name:', name: 'keyPair', type: 'text' }
+        ]
+      },
+      {
+        title: 'RHEL GUI Instance in Cloud',
+        description: 'Deploy a RHEL instance with a GUI interface in the AWS cloud.',
+        image: 'templates/rhel_gui.png',
+        formId: 'rhelGuiForm',
+        endpoint: '/deploy_rhel_gui',
+        fields: [
+          { label: 'Instance Type:', name: 'type', type: 'text' },
+          { label: 'Root Volume Size:', name: 'volumeSize', type: 'number' }
+        ]
+      },
+      {
+        title: 'Access Logs from Cloud',
+        description: 'Retrieve and analyze logs stored in AWS CloudWatch.',
+        image: 'templates/cloudwatch_logs.png',
+        formId: 'accessLogsForm',
+        endpoint: '/access_logs',
+        fields: [
+          { label: 'Log Group Name:', name: 'logGroup', type: 'text' }
+        ]
+      },
+      {
+        title: 'Event-Driven Architecture with S3 and Transcribe',
+        description: 'Automatically convert audio files uploaded to S3 into text using AWS Transcribe.',
+        image: 'templates/s3_transcribe.png',
+        formId: 'eventDrivenForm',
+        endpoint: '/event_driven',
+        fields: [
+          { label: 'S3 Bucket Name:', name: 'bucketName', type: 'text' }
+        ]
+      },
+      {
+        title: 'Python to MongoDB via Lambda',
+        description: 'Connect a Python application to MongoDB service on AWS using Lambda functions.',
+        image: 'templates/python_mongodb.png',
+        formId: 'pythonLambdaForm',
+        endpoint: '/python_lambda',
+        fields: [
+          { label: 'Lambda Function Name:', name: 'lambdaName', type: 'text' },
+          { label: 'MongoDB URI:', name: 'mongodbUri', type: 'text' }
+        ]
+      },
+      {
+        title: 'Upload Object to S3',
+        description: 'Upload any object to an S3 bucket.',
+        image: 'templates/upload_s3.png',
+        formId: 'uploadS3Form',
+        endpoint: '/upload_s3',
+        fields: [
+          { label: 'S3 Bucket Name:', name: 'bucketName', type: 'text' },
+          { label: 'File:', name: 'file', type: 'file' }
+        ]
+      },
+      {
+        title: 'Lambda and S3 Integration',
+        description: 'Process an object file in S3 to send emails using SES.',
+        image: 'templates/lambda_s3.png',
+        formId: 'lambdaS3Form',
+        endpoint: '/lambda_s3',
+        fields: [
+          { label: 'S3 Bucket Name:', name: 'bucketName', type: 'text' },
+          { label: 'Email File:', name: 'emailFile', type: 'file' }
+        ]
+      }
+    ];
+
+    const projectsContainer = document.getElementById('projects');
+
+    projects.forEach(project => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.innerHTML = `
+        <img src="${project.image}" alt="${project.title}">
+        <h2>${project.title}</h2>
+        <p>${project.description}</p>
+        <div class="overlay">
+          <h2>${project.title}</h2>
+          <p>${project.description}</p>
+          <button class="project-btn" onclick="document.getElementById('${project.formId}').scrollIntoView({ behavior: 'smooth' })">Learn More</button>
+        </div>
+      `;
+
+      const form = document.createElement('form');
+      form.id = project.formId;
+      form.innerHTML = `
+        <h2>${project.title} Form</h2>
+        ${project.fields.map(field => `
+          <label>${field.label}
+            <input type="${field.type}" name="${field.name}" ${field.type === 'file' ? '' : 'required'}>
+          </label>
+        `).join('')}
+        <button type="submit">Submit</button>
+      `;
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        fetch(project.endpoint, {
+          method: 'POST',
+          body: new FormData(form)
+        })
+        .then(response => response.text())
+        .then(data => alert('Form submitted successfully!'))
+        .catch(error => alert('Error submitting form!'));
+      });
+
+      card.appendChild(form);
+      projectsContainer.appendChild(card);
+    });
+  </script>
+</body>
+</html>
