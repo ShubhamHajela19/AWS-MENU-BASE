@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>Python Projects</title> 
+  <link rel="stylesheet" href="https://pyscript.net/releases/2024.8.2/core.css">
+  <script type="module" src="https://pyscript.net/releases/2024.8.2/core.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #121212;
+      color: #f5f5f5;
+      font-family: 'Open Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #1e1e1e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .loader h1 {
+      font-size: 3rem;
+      color:  #f39c12;
+      opacity: 0;
+      animation: fadeInOut 3s ease-in-out forwards;
+    }
+
+    @keyframes fadeInOut {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .hide {
+      display: none;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+      background-color: #1e1e1e;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      padding: 0 20px;
+      animation: slideUp 1s ease-in-out;
+    }
+    nav h1 {
+      color:  #f39c12;
+      font-family: 'Montserrat', sans-serif;
+    }
+    nav ul {
+      display: flex;
+      gap: 20px;
+    }
+    nav ul li {
+      list-style: none;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #f5f5f5;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s, transform 0.3s;
+    }
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 0;
+      height: 2px;
+      background:  #f39c12;
+      transition: width 0.3s;
+    }
+    nav ul li a:hover::after {
+      width: 100%;
+    }
+    nav ul li a:hover {
+      color: #756416;
+      transform: scale(1.1) translateY(-3px);
+    }
+    main {
+      margin-top: 80px;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color:  #f39c12;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 20px;
+    }
+    .card {
+      background-color: #1e1e1e;
+      color: #f5f5f5;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      height: auto;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 15px;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      max-height: 300px;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .card:hover img {
+      transform: scale(1.1);
+      opacity: 0.7;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #f5f5f5;
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .card:hover .overlay {
+      opacity: 1;
+    }
+
+    .overlay h2 {
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+      color:  #f39c12;
+    }
+
+    .overlay p {
+      margin-bottom: 20px;
+    }
+
+    .project-btn {
+      background-color:  #f39c12;
+      color: #1e1e1e;
+      border: none;
+      padding: 10px 20px;
+      text-transform: uppercase;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 50px;
+    }
+
+    .project-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(255, 174, 0, 0.5);
+    }
+
+    form {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    form input, form textarea {
+      margin-bottom: 10px;
+      padding: 10px;
+      width: 90%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: border-color 0.3s ease;
+    }
+
+    form input:focus, form textarea:focus {
+      border-color:  #f39c12;
+    }
+
+    form button {
+      width: auto;
+    }
+
+    footer {
+      background-color: #1e1e1e;
+      color: #f5f5f5;
+      padding: 20px;
+      text-align: center;
+      border-top: 5px solid  #f39c12;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader Animation -->
+  <div class="loader">
+    <h1>Loading Python Projects...</h1>
+  </div>
+
+  <header>
+    <nav>
+      <h1>Python Projects</h1>
+      <ul>
+        <li><a href="Home.html">Home</a></li>
+        <li><a href="AWSprojects.html">AWS Projects</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main id="home">
+    <h1>My Python Projects</h1>
+    <div class="card-container" id="projects"></div>
+  </main>
+  <script>
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.querySelector('.loader').classList.add('hide');
+      }, 3000);
+    });
+
+    const projects = [
+      {
+        title: 'Send Email using Python',
+        description: 'Send an email using Python with just a few lines of code.',
+        image: 'templates/email.png',
+        formId: 'emailForm',
+        endpoint: '/send_email',
+        fields: [
+          { label: 'Recipient Email:', name: 'email', type: 'email' },
+          { label: 'Subject:', name: 'subject', type: 'text' },
+          { label: 'Message:', name: 'message', type: 'textarea' }
+        ]
+      },
+      {
+        title: 'Send SMS using Python',
+        description: 'Easily send SMS messages through Python scripts.',
+        image: 'templates/chat.png',
+        formId: 'smsForm',
+        endpoint: '/send_sms',
+        fields: [
+          { label: 'Phone Number:', name: 'phone', type: 'text' },
+          { label: 'Message:', name: 'message', type: 'textarea' }
+        ]
+      },
+      {
+        title: 'Scrape Top 5 Google Results',
+        description: 'Scrape the top 5 Google search results using Python.',
+        image: 'templates/google result 1.png',
+        formId: 'scrapeForm',
+        endpoint: '/scrape_google',
+        fields: [
+          { label: 'Search Query:', name: 'query', type: 'text' }
+        ]
+      },
+      {
+        title: 'Get Geo Coordinates',
+        description: 'Find the current geo coordinates and location using Python.',
+        image: 'templates/geo coordinates.png',
+        formId: 'geoForm',
+        endpoint: '/get_geo',
+        fields: []
+      },
+      {
+        title: 'Text-to-Audio Conversion',
+        description: 'Convert any text into audio using Python.',
+        image: 'templates/Text-to-Speech-pic.png',
+        formId: 'ttsForm',
+        endpoint: '/text_to_audio',
+        fields: [
+          { label: 'Text:', name: 'text', type: 'textarea' }
+        ]
+      },
+      {
+        title: 'Control Laptop Volume',
+        description: 'Control your laptop’s volume using Python.',
+        image: 'templates/volume controller.png',
+        formId: 'volumeForm',
+        endpoint: '/control_volume',
+        fields: [
+          { label: 'Volume Level (0-100):', name: 'volume', type: 'number' }
+        ]
+      },
+      {
+        title: 'Send SMS via Mobile App',
+        description: 'Connect to your mobile and send SMS using Python.',
+        image: 'templates/sms 3d.png',
+        formId: 'mobileSmsForm',
+        endpoint: '/send_mobile_sms',
+        fields: [
+          { label: 'Phone Number:', name: 'phone', type: 'text' },
+          { label: 'Message:', name: 'message', type: 'textarea' }
+        ]
+      },
+      {
+        title: 'Bulk Email Sender',
+        description: 'Send bulk emails using a custom Python script.',
+        image: 'templates/bulk email.png',
+        formId: 'bulkEmailForm',
+        endpoint: '/send_bulk_email',
+        fields: [
+          { label: 'Recipient Emails (comma-separated):', name: 'emails', type: 'text' },
+          { label: 'Subject:', name: 'subject', type: 'text' },
+          { label: 'Message:', name: 'message', type: 'textarea' }
+        ]
+      }
+    ];
+
+    function createProjectCard(project) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        ${project.image ? <img src="${project.image}" alt="${project.title}"> : ''}
+        <div class="overlay">
+          <h2>${project.title}</h2>
+          <p>${project.description}</p>
+          <form id="${project.formId}" action="${project.endpoint}" method="POST">
+            ${project.fields.map(field => `
+              <label for="${field.name}">${field.label}</label>
+              ${field.type === 'textarea' ? 
+                <textarea id="${field.name}" name="${field.name}" required></textarea> :
+                <input type="${field.type}" id="${field.name}" name="${field.name}" required> 
+              }
+            `).join('')}
+            <button class="project-btn" type="submit">Submit</button>
+          </form>
+        </div>
+      `;
+      document.getElementById('projects').appendChild(card);
+
+      document.getElementById(project.formId).addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        fetch(this.action, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => {
+          if (project.title === 'Text-to-Audio Conversion') {
+            return response.blob();
+          } else {
+            return response.json();
+          }
+        })
+        .then(data => {
+          if (project.title === 'Text-to-Audio Conversion') {
+            const url = window.URL.createObjectURL(new Blob([data]));
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'output.mp3';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    }
+
+    projects.forEach(createProjectCard);
+  </script>
+</body>
+</html>
